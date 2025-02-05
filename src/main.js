@@ -1,24 +1,38 @@
 import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+import obFour from './ob-4.svg';
+import audioTrack from './tibetan-bowl-meditation-music.mp3';
 
 document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
+  <div id='obfour'>
+     <img src='${obFour}' class='img-obfour' alt='Teenage Engineering OB-4' />
+     	<section class="tape">
+			<audio src='${audioTrack}' crossorigin="anonymous" ></audio>
+			<button data-playing="false" class="tape-controls-play" role="switch" aria-checked="false">
+				<span>play/pause</span>
+			</button>
+		</section>
   </div>
 `
 
-setupCounter(document.querySelector('#counter'))
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const playButton = document.querySelector('.tape-controls-play');
+  const audio = document.querySelector('audio');
+
+  playButton.addEventListener('click', () => {
+    const isPlaying = playButton.getAttribute('data-playing') === 'true';
+    if (isPlaying) {
+      audio.pause();
+      playButton.setAttribute('data-playing', 'false');
+      playButton.setAttribute('aria-checked', 'false');
+      playButton.querySelector('span').textContent = 'play';
+    } else {
+      audio.play();
+      playButton.setAttribute('data-playing', 'true');
+      playButton.setAttribute('aria-checked', 'true');
+      playButton.querySelector('span').textContent = 'pause';
+    }
+  });
+});
