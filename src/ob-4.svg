@@ -2,7 +2,7 @@
 <path d="M38.5 417.5H64.5V418C64.5 418.828 63.8284 419.5 63 419.5H40C39.1716 419.5 38.5 418.828 38.5 418V417.5Z" fill="#181818" stroke="black"/>
 <path d="M275.5 417.5H301.5V418C301.5 418.828 300.828 419.5 300 419.5H277C276.172 419.5 275.5 418.828 275.5 418V417.5Z" fill="#181818" stroke="black"/>
 <rect x="15.5" y="95.5" width="309" height="322" fill="url(#paint0_linear_1_91)" stroke="black"/>
-<rect x="15.5" y="95.5" width="309" height="13" fill="#181818" stroke="black"/>
+<rect x="15.5" y="95.5" width="309" height="13" fill="#181818" stroke="#181818"/>
 <rect y="128" width="4" height="19" rx="1" fill="#D9D9D9"/>
 <rect x="0.5" y="128.5" width="3" height="18" rx="0.5" fill="#181818" stroke="black"/>
 <rect x="336.5" y="128.5" width="3" height="18" rx="0.5" fill="#181818" stroke="black"/>

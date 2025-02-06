@@ -27,6 +27,17 @@ body {
   text-align: center;
 }
 
+#obfour {
+  position: relative;
+}
+
+.tape {
+  position: absolute;
+  top: 23%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+}
+
 .img-obfour {
   height: 80vh;
   width: 100%;
@@ -35,23 +46,24 @@ body {
 }
 
 .tape-controls-play {
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 10px 20px;
+  background-color: #181818;
+  border: 1px solid #181818;
+  color: #f1f1f1;
+  border-radius: 2px;
+  padding: 4px 4px 2px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 7px;
+  width: 34px;
+  height: 20px; 
+  transition: all 0.25s ease;
 }
 
-.tape-controls-play span {
-  display: inline-block;
-  transition: color 0.3s;
+
+.tape-controls-play[data-playing="true"] {
+  height: 16px;
+  padding: 3px 4px 2px;
 }
 
-.tape-controls-play[data-playing="true"] span {
-  color: green;
-}
-
-.tape-controls-play[data-playing="false"] span {
-  color: red;
+.tape-controls-play[data-playing="false"] {
+  height: 20px;
 }

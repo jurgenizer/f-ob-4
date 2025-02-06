@@ -8,7 +8,7 @@ document.querySelector('#app').innerHTML = `
      	<section class="tape">
 			<audio src='${audioTrack}' crossorigin="anonymous" ></audio>
 			<button data-playing="false" class="tape-controls-play" role="switch" aria-checked="false">
-				<span>play/pause</span>
+				<span>play</span>
 			</button>
 		</section>
   </div>
