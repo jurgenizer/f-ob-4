@@ -25,11 +25,6 @@ document.querySelector('#app').innerHTML = `
             step='0.01'
             data-action='volume'
           />
-          <datalist id='gain-vals'>
-            <option value='0' label='min'></option>
-            <option value='2' label='max'></option>
-          </datalist>
-
           <label for='volume'>volume</label>
         </section>
         </section>
@@ -53,11 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
     track = new MediaElementAudioSourceNode(audioCtx, {
       mediaElement: audioElement,
     });
-    
+
     // Create and connect the gain node
     gainNode = new GainNode(audioCtx);
     track.connect(gainNode).connect(audioCtx.destination);
-    
+
     // Set initial volume
     gainNode.gain.value = volumeControl.value;
   }
@@ -90,30 +85,25 @@ document.addEventListener('DOMContentLoaded', () => {
   }, false);
 
   // Volume control
-  volumeControl.addEventListener('input', () => {
+  volumeControl.addEventListener('input', (e) => {
+    // Handle volume change
     if (gainNode) {
-      gainNode.gain.value = volumeControl.value;
+      gainNode.gain.value = e.target.value;
     }
+
+    // Handle color change
+    const value = e.target.value;
+    const max = e.target.max;
+    const ratio = value / max;
+
+    // Interpolate between dark (#181818) and bright green (#00FF00)
+    const r = Math.round(24 + (0 - 24) * ratio);
+    const g = Math.round(24 + (255 - 24) * ratio);
+    const b = Math.round(24 + (0 - 24) * ratio);
+
+    document.documentElement.style.setProperty('--thumb-color', `rgb(${r}, ${g}, ${b})`);
+
   }, false);
-
-
-
-/* filepath: /Users/jurgen/Documents/fun/f-ob-4/src/main.js */
-// Add this to your existing DOMContentLoaded event listener
-volumeControl.addEventListener('input', (e) => {
-  // Calculate color based on value
-  const value = e.target.value;
-  const max = e.target.max;
-  const ratio = value / max;
-  
-  // Interpolate between dark (#181818) and bright green (#00FF00)
-  const r = Math.round(24 + (0 - 24) * ratio);
-  const g = Math.round(24 + (255 - 24) * ratio);
-  const b = Math.round(24 + (0 - 24) * ratio);
-  
-  // Apply the color to the thumb
-  document.documentElement.style.setProperty('--thumb-color', `rgb(${r}, ${g}, ${b})`);
-});
 
 
 });
