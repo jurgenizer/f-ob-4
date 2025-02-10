@@ -4,14 +4,16 @@ import audioTrack from './tibetan-bowl-meditation-music.mp3';
 
 document.querySelector('#app').innerHTML = `
   <div id='obfour'>
+  
      <img src='${obFour}' class='img-obfour' alt='Teenage Engineering OB-4' />
-     	<section class='tape'>
-			<audio src='${audioTrack}' crossorigin='anonymous' ></audio>
-			<button data-playing='false' class='tape-controls-play' role='switch' aria-checked='false'>
-				<span>play</span>
-			</button>
-		</section>
-         <section class='master-controls'>
+     <section class='control-section'>
+     	<section class='play-control-section'>
+			  <audio src='${audioTrack}' crossorigin='anonymous' ></audio>
+			    <button data-playing='false' class='play-control-play' role='switch' aria-checked='false'>
+				    <span>play</span>
+			    </button>
+		  </section>
+      <section class='volume-control-section'>
           <input
             type='range'
             id='volume'
@@ -29,7 +31,7 @@ document.querySelector('#app').innerHTML = `
           </datalist>
 
           <label for='volume'>volume</label>
-
+        </section>
         </section>
 
 
@@ -42,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let track;
   let gainNode;
 
-  const playButton = document.querySelector('.tape-controls-play');
+  const playButton = document.querySelector('.play-control-play');
   const audioElement = document.querySelector('audio');
   const volumeControl = document.querySelector('[data-action="volume"]');
 
@@ -93,5 +95,26 @@ document.addEventListener('DOMContentLoaded', () => {
       gainNode.gain.value = volumeControl.value;
     }
   }, false);
+
+
+
+/* filepath: /Users/jurgen/Documents/fun/f-ob-4/src/main.js */
+// Add this to your existing DOMContentLoaded event listener
+volumeControl.addEventListener('input', (e) => {
+  // Calculate color based on value
+  const value = e.target.value;
+  const max = e.target.max;
+  const ratio = value / max;
+  
+  // Interpolate between dark (#181818) and bright green (#00FF00)
+  const r = Math.round(24 + (0 - 24) * ratio);
+  const g = Math.round(24 + (255 - 24) * ratio);
+  const b = Math.round(24 + (0 - 24) * ratio);
+  
+  // Apply the color to the thumb
+  document.documentElement.style.setProperty('--thumb-color', `rgb(${r}, ${g}, ${b})`);
+});
+
+
 });
 

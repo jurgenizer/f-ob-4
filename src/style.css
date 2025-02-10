@@ -4,6 +4,7 @@
   font-weight: 400;
   color: #000;
   background-color: #f9f9f9;
+  --thumb-color: #181818;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -29,14 +30,29 @@ body {
 
 #obfour {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.tape {
-  position: absolute;
-  top: 23%;
-  left: 30%;
-  transform: translate(-50%, -50%);
+.control-section {
+ position: absolute;
+  left: 0%;
+  top: 24%;
+  transform: translate(0%, -50%);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+ height: 60px;
+  width: 100%;
 }
+
+.play-control-section {
+  max-width: 50px;
+  margin-top: 15px;
+
+}
+
 
 .img-obfour {
   height: 80vh;
@@ -45,25 +61,71 @@ body {
   margin: 0 auto;
 }
 
-.tape-controls-play {
+.play-control-play {
   background-color: #181818;
   border: 1px solid #181818;
   color: #f1f1f1;
   border-radius: 2px;
-  padding: 4px 4px 2px;
+  padding: 4px 4px 1px;
   cursor: pointer;
   font-size: 7px;
   width: 34px;
-  height: 20px; 
+  height: 22px;
   transition: all 0.25s ease;
 }
 
 
-.tape-controls-play[data-playing="true"] {
-  height: 16px;
+.play-control-play[data-playing="true"] {
+  height: 18px;
   padding: 3px 4px 2px;
 }
 
-.tape-controls-play[data-playing="false"] {
-  height: 20px;
+.play-control-play[data-playing="false"] {
+  height: 22px;
+}
+
+.volume-control-section {
+  display: flex;
+  flex-direction: column;
+  max-width: 50px;
+}
+
+.volume-control-section>label {
+  color: #f1f1f1;
+  font-size: 7px;
+
+}
+
+
+.control-volume {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 22px;
+  background: #181818;
+  background: transparent;
+  outline: none;
+  z-index: 0;
+}
+
+
+.control-volume::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 9px;
+  height: 22px;
+  border-radius: 2px 2px 0px 0px;
+  border: 1px solid #181818;
+  background: var(--thumb-color);
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.control-volume::-moz-range-thumb {
+  width: 9px;
+  height: 22px;
+  border-radius: 2px 2px 0px 0px;
+  border: 1px solid #181818;
+  background: var(--thumb-color);
+  cursor: pointer;
+  transition: background-color 0.25s ease;
 }
