@@ -4,7 +4,7 @@ import audioTrack from './tibetan-bowl-meditation-music.mp3';
 
 document.querySelector('#app').innerHTML = `
   <div id='obfour'>
-  
+    <canvas id="visualizer" class="visualizer-canvas"></canvas>
      <img src='${obFour}' class='img-obfour' alt='Teenage Engineering OB-4' />
      <section class='control-section'>
      	<section class='play-control-section'>
@@ -34,28 +34,100 @@ document.querySelector('#app').innerHTML = `
 `
 
 document.addEventListener('DOMContentLoaded', () => {
-  // instigate our audio context
   let audioCtx;
   let track;
   let gainNode;
+  let analyser; 
 
   const playButton = document.querySelector('.play-control-play');
   const audioElement = document.querySelector('audio');
   const volumeControl = document.querySelector('[data-action="volume"]');
+  const canvas = document.getElementById('visualizer');
+  const canvasCtx = canvas.getContext('2d');
+  const obFourImage = document.querySelector('.img-obfour');
+
+  function updateCanvasSize() {
+    const rect = obFourImage.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+  }
+
+  function draw() {
+    // Create separate arrays for left and right channels
+    const leftDataArray = new Float32Array(analyser.frequencyBinCount);
+    
+    // Get time domain data for both channels
+    analyser.getFloatTimeDomainData(leftDataArray);
+    const rightChannelData = leftDataArray.slice(analyser.frequencyBinCount / 2);
+    
+    // Calculate average amplitude for each channel
+    const leftAmplitude = leftDataArray.reduce((acc, val) => acc + Math.abs(val), 0) 
+      / leftDataArray.length;
+    const rightAmplitude = rightChannelData.reduce((acc, val) => acc + Math.abs(val), 0) 
+      / rightChannelData.length;
+    
+    // Clear canvas
+    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    const leftCenterX = canvas.width * 0.314;
+    const rightCenterX = canvas.width * 0.688;
+    const centerY = canvas.height * 0.493;
+
+    // Scale radius based on canvas size
+    const baseRadius = Math.min(canvas.width, canvas.height) * 0.145;
+  
+    // Draw left circle
+    canvasCtx.beginPath();
+    canvasCtx.strokeStyle = '#181818';
+    canvasCtx.lineWidth = Math.max(2, canvas.width * 0.0004);
+    
+    const leftRadius = baseRadius + (leftAmplitude * baseRadius);
+    canvasCtx.arc(leftCenterX, centerY, leftRadius, 0, 2 * Math.PI);
+    canvasCtx.stroke();
+    
+    // Draw right circle
+    canvasCtx.beginPath();
+    const rightRadius = baseRadius + (rightAmplitude * baseRadius);
+    canvasCtx.arc(rightCenterX, centerY, rightRadius, 0, 2 * Math.PI);
+    canvasCtx.stroke();
+    
+    requestAnimationFrame(draw);
+  }
 
   function init() {
     audioCtx = new AudioContext();
     track = new MediaElementAudioSourceNode(audioCtx, {
       mediaElement: audioElement,
     });
-
+  
+    // Create analyzer node
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 256;
+  
     // Create and connect the gain node
     gainNode = new GainNode(audioCtx);
-    track.connect(gainNode).connect(audioCtx.destination);
+  
+    // Connect nodes: track -> gain -> analyser -> destination
+    track.connect(gainNode)
+      .connect(analyser)
+      .connect(audioCtx.destination);
+
+    // Initial canvas size
+    updateCanvasSize();
+
+    // Update on window resize
+    window.addEventListener('resize', updateCanvasSize);
+
+    // Start the animation
+    draw();
 
     // Set initial volume
     gainNode.gain.value = volumeControl.value;
   }
+
+
+
+ 
 
   playButton.addEventListener('click', () => {
     // Initialize audio context on first click
