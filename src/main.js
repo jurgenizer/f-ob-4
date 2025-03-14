@@ -3,9 +3,13 @@ import obFour from './ob-4.svg';
 import audioTrack from './tibetan-bowl-meditation-music.mp3';
 import { AudioController } from './audio';
 import { Visualizer } from './visualizer';
+import { BackgroundAnimation } from './background';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Setup DOM
+
+  const background = new BackgroundAnimation();
+background.draw();
+
   document.querySelector('#app').innerHTML = `
     <div id='obfour'>
       <canvas id="visualizer" class="visualizer-canvas"></canvas>
